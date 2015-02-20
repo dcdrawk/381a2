@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+    <link rel="stylesheet" type="text/css" href="style/main.css">
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="scripts/three.min.js"></script>
+    <script src="scripts/tween.min.js"></script>
+    <script type="text/javascript" src="scripts/physi.js"></script>
+    <script defer="defer">
+
+      Physijs.scripts.worker = 'scripts/physijs_worker.js';
+      Physijs.scripts.ammo = 'ammo.js';
+
+      var camera, scene, renderer;
+      var objects = [], plane;
+
+      var raycaster = new THREE.Raycaster();
+      var mouse = new THREE.Vector2(),
+      offset = new THREE.Vector3(),
+      INTERSECTED, SELECTED;
+
+
+
+      var width = window.innerWidth,
+          height = window.innerHeight;
+
+      //Cube
+      var materials = [
+          new THREE.MeshLambertMaterial({
+              ambient: 0xffffff,
+              map: THREE.ImageUtils.loadTexture( 'img/dice1.jpg' ) }),
+          new THREE.MeshLambertMaterial({
+              ambient: 0xffffff,
+              map: THREE.ImageUtils.loadTexture( 'img/dice6.jpg' ) }),
+          new THREE.MeshLambertMaterial({
+              ambient: 0xffffff,
+              map: THREE.ImageUtils.loadTexture( 'img/dice2.jpg' ) }),
+          new THREE.MeshLambertMaterial({
+              ambient: 0xffffff,
+              map: THREE.ImageUtils.loadTexture( 'img/dice5.jpg' ) }),
+          new THREE.MeshLambertMaterial({
+              ambient: 0xffffff,
+              map: THREE.ImageUtils.loadTexture( 'img/dice3.jpg' ) }),
+          new THREE.MeshLambertMaterial( {
+              ambient: 0xffffff,
+              map: THREE.ImageUtils.loadTexture( 'img/dice4.jpg' ) })
+      ];
+
+
+      var friction = 0; // high friction
+      var restitution = 1; // low restitution
+
+      var material = Physijs.createMaterial(
+          new THREE.MeshBasicMaterial({ color: 0x888888 }),
+          friction,
+          restitution
+      );
+
+      var testMat = Physijs.createMaterial(
+          new THREE.MeshFaceMaterial(materials),
+          friction,
+          restitution
+      );
+
+      var geometry = new THREE.CubeGeometry(80, 80, 80, 3, 3, 3);
+      var groundGeo = new THREE.CubeGeometry(100, 5, 200, 0, 0, 200);
+
+          //cube     = new Physijs.BoxMesh( geometry, new THREE.MeshFaceMaterial(materials) );
+          cube     = new Physijs.BoxMesh( geometry, testMat, 99 );
+          ground = new Physijs.BoxMesh( groundGeo, material, 0 );
+          testblock = new Physijs.BoxMesh( groundGeo, material, 1 );
+          objects = [cube];
+      // revolutions per second
+      var angularSpeed = 0.2;
+      var lastTime = 0;
+
+      cube.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+          // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
+          console.log('test!');
+      });
+
+      // this function is executed on each animation frame
+      function animate(){
+        // update
+        scene.simulate(); // run physics
+        var time = (new Date()).getTime();
+        var timeDiff = time - lastTime;
+        var angleChange = angularSpeed * timeDiff * 2 * Math.PI / 1000;
+        //cube.rotation.y += angleChange;
+        lastTime = time;
+
+        // render
+        renderer.render(scene, camera);
+        renderer.setClearColor( 0xbbbbbb, 1);
+        // request new frame
+        requestAnimationFrame(function(){
+            animate();
+        });
+        var vel = cube.getAngularVelocity(),
+				    factor = -1;
+
+				cube.applyCentralForce(new THREE.Vector3(vel.x / factor, vel.y / factor, vel.z / factor));
+        //cube.__dirtyPosition = true;
+        TWEEN.update();
+      }
+
+      // renderer
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // camera
+      //var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 600;
+      camera.position.y = 000;
+      //camera.rotation.x = Math.PI * -0.5;
+      // scene
+      //var scene = new THREE.Scene();
+      scene = new Physijs.Scene;
+      scene.addEventListener( 'update', myUpdateHandler );
+      document.addEventListener('mousedown', onDocumentMouseDown, false );
+      scene.setGravity(new THREE.Vector3( 0, -50, 0 ));
+
+      //
+      // // material
+      // var material = new THREE.MeshLambertMaterial({
+      //   map: THREE.ImageUtils.loadTexture('img/crate.jpg')
+      // });
+      //
+      // // materials
+      // var materials = [];
+      // for ( var i = 1; i < 6; i ++ ) {
+      //     materials.push( new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/dice' + i + '.jpg') } ) );
+      // }
+      //
+      //
+      // // cube
+      // //var cube = new THREE.Mesh(new THREE.CubeGeometry(200, 200, 200), material);
+      // var cube = new THREE.Mesh( new THREE.CubeGeometry( 200, 200, 200, 5,5,5, materials ), new THREE.MeshFaceMaterial() );
+      // THREE.GeometryUtils.setMaterialIndex( cube.geometry, 0 );
+      // //cube.overdraw = true;
+
+    //  ground.rotation.x = Math.PI * 0.1;
+      //cube.rotation.x = Math.PI * 0.1;
+
+      cube.translateY(60);
+
+      scene.add(cube);
+      scene.add(ground);
+
+      //
+      // add subtle ambient lighting
+      var ambientLight = new THREE.AmbientLight(0xcccccc);
+      scene.add(ambientLight);
+
+      // directional lighting
+      var directionalLight = new THREE.DirectionalLight(0xffffff);
+      directionalLight.position.set(1, 1, 1).normalize();
+      scene.add(directionalLight);
+
+      var position = { x : ground.position.x, y: ground.position.y };
+      var target = { x : 0, y: 200 };
+      var tween = new TWEEN.Tween(position).to(target, 700);
+
+      tween.onUpdate(function(){
+        // ground.position.x = position.x;
+        // ground.position.y = position.y;
+        // ground.__dirtyPosition = true;
+      });
+      tween.delay(2000);
+      tween.start();
+      console.log('test!');
+
+
+
+      // start animation
+      animate();
+      function myUpdateHandler(){
+
+      }
+      function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+      function onDocumentMouseDown( event ) {
+        event.preventDefault();
+        console.log('test!');
+        var rotation_matrix = new THREE.Matrix4().extractRotation(cube.matrix);
+        var force_vector = new THREE.Vector3(0, 5000, 0).applyMatrix4(rotation_matrix);
+        cube.applyCentralImpulse(force_vector);
+      }
+    </script>
+  </body>
+</html>
