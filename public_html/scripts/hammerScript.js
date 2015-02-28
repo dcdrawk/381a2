@@ -19,11 +19,17 @@ mc.add([pinch, rotate]);
 
 mc.on("pinch rotate press pinchend", function(ev) {
     var pinchScale = ev.scale;
-
+    var pinchReverse = ev.scale;
+    if(ev.type == "pinch" && pinchScale < 1){
+      var pinchReverse = 1-ev.scale;
+      //onDocumentPinch(ev, pinchScale);
+      camera.position.y = 700+pinchReverse*400;
+    }
   //  mc.on('release', onPinchEnd);
     if(ev.type == "pinchend"){
       console.log(ev.type +" detected" + pinchScale);
       $("hammerPad").trigger( "click" );
-      onDocumentMouseDown(ev, pinchScale);
+      onDocumentPinch(ev, pinchScale);
+      camera.position.y = 700;
     }
 });
