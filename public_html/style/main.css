@@ -1,22 +1,28 @@
 body{
-  background:#bbbbbb;
-  max-width:100%;
-  overflow:hidden;
+	margin: 0px;
+	padding: 0px;
+	background:#bbbbbb;
+	max-width:100%;
+	overflow:hidden;
 }
 p{
-  font-size:2em;
+	font-size:2em;
 }
 
 #controls{
-  font-size:2em;
-  position:fixed;
-  top:0px;
-  left:0px;
-  margin-top:.5em;
-  margin-left:.5em;
+	font-size:2em;
+	position:fixed;
+	top:0px;
+	left:0px;
+	margin-top:.5em;
+	margin-left:.5em;
 }
 
 #add, #remove, #total{
-  display:inline;
-  margin:0 .5em 0 .5em;
+	display:inline;
+	margin:0 .5em 0 .5em;
+}
+
+audio{
+	display:none;
 }

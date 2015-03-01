@@ -17,7 +17,7 @@ pinch.recognizeWith(rotate);
 mc.add([pinch, rotate]);
 
 
-mc.on("pinch rotate press pinchend", function(ev) {
+mc.on("pinch rotate press pinchstart pinchend", function(ev) {
     var pinchScale = ev.scale;
     var pinchReverse = ev.scale;
     if(ev.type == "pinch" && pinchScale < 1){
@@ -26,6 +26,9 @@ mc.on("pinch rotate press pinchend", function(ev) {
       camera.position.y = 700+pinchReverse*400;
     }
   //  mc.on('release', onPinchEnd);
+	if(ev.type == "pinchstart"){
+		onPinchStart(ev);
+	}
     if(ev.type == "pinchend"){
       console.log(ev.type +" detected" + pinchScale);
       $("hammerPad").trigger( "click" );
