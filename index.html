@@ -1,0 +1,79 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>DiceRoller</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <!-- Style sheets -->
+    <link rel="stylesheet" href="styles/angular-material.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/angular-toastr.css">
+
+    <!-- Roboto fonts: Normal(400), Medium(500), Bold(700) -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
+  </head>
+
+  <body id="hammerPad" ng-app="myappApp" layout="row" layout-fill role="main">
+    <div ng-controller="AppCtrl" layout="column" layout-fill>
+
+      <!-- Main Toolbar -->
+      <md-toolbar class="noselect" id="mainMenu" class="md-primary">
+        <div class="md-toolbar-tools">
+<!--
+          <md-button class="md-primary appMenu" ng-click="toggleLeft()" aria-label="Menu">
+            <md-icon icon="img/icons/ic_menu_white_24dp.png" style="width: 24px; height: 24px;"></md-icon>
+          </md-button>
+-->
+          <span id="appTitle" class="md-flex">DiceRoller</span>
+          <div id="profileBtns">
+<!--
+				<md-button class="md-primary appMenu" ng-click="toggleLeft()" aria-label="Menu">
+					<md-icon icon="img/icons/ic_menu_white_24dp.png" style="width: 24px; height: 24px;"></md-icon>
+			  	</md-button>
+-->
+			  <div>Total:</div>
+			  <div id="total"></div>
+          </div>
+        </div>
+      </md-toolbar>
+        <!-- View content-->
+        <md-content flex>
+          <div id="doc-content" layout="column" layout-fill layout-align="center center">
+
+            <!-- Render the selected view -->
+            <div id="view-content" ng-view=""></div>
+
+          </div>
+        </md-content>
+        <!-- /View content-->
+
+      </section>
+    </div>
+
+    <!-- I took all of my Angular components and minified them into one file: -->
+    <script src="scripts/libs/angular-components.min.js"></script>
+
+    <!-- The rest of the app/controller: -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+
+    <!-- These scripts are from a online tutorial I followed: http://www.angularcode.com/user-authentication-using-angularjs-php-mysql/ -->
+<!--
+    <script src="scripts/data/data.js"></script>
+    <script src="scripts/data/directives.js"></script>
+-->
+	
+	<script src="scripts/dice/three.min.js"></script>
+	<script src="scripts/dice/tween.min.js"></script>
+
+	<script src="scripts/dice/jquery.min.js"></script>
+	<script src="scripts/dice/hammer.min.js"></script>
+	
+	<script src="scripts/dice/THREEx.KeyboardState.js"></script>
+	<script type="text/javascript" src="scripts/dice/physi.js"></script>
+
+
+</body>
+</html>
