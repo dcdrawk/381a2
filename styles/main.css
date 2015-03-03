@@ -132,13 +132,15 @@ canvas{
 	padding-right: 1em;
 }
 #controls{
+/*	opacity:.5;*/
 	z-index: 999;
 	position:absolute;
 	bottom:-150px;
 	transition:all .5s ease;
 	width:100%;
 	border-top: 2px solid #37474F;
-	background-color: #CFD8DC;
+/*	background-color: #CFD8DC;*/
+	background-color: rgba(207, 216, 220, 0.85)
 /*	box-shadow: inset 0px 0px 5px 1px #063347;*/
 }
 
@@ -734,7 +736,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 #drawerTitle {
 	text-align: center;
-	
+	font-weight:500;
 }
 
 #profileBtns div {

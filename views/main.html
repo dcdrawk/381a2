@@ -448,11 +448,11 @@
 					for (i = 0; i < d6Array.length; i++){
 						plusOrMinus = Math.random() < 0.5 ? -1 : 1
 						randomVal = (1+(Math.random()*2))*plusOrMinus;
-						testRotation = new THREE.Vector3((start.value*rotationMultiplier)*randomVal  , (start2.value*rotationMultiplier)*randomVal, (start3.value*rotationMultiplier)*randomVal);
-						console.log(start.value + " ");
+						testRotation = new THREE.Vector3((start.value*rotationMultiplier)*randomVal, 
+														(start2.value*rotationMultiplier)*randomVal,
+														(start3.value*rotationMultiplier)*randomVal);
+//						console.log(start.value + " ");
 						d6Array[i].setAngularVelocity(testRotation);
-						//var force_vector = new THREE.Vector3(-500, -10000, -500);
-						//diceArray[i].applyCentralImpulse(force_vector);
 					}
 					
 					for (i = 0; i < d4Array.length; i++){
@@ -461,8 +461,6 @@
 						testRotation = new THREE.Vector3((start.value*rotationMultiplier)*randomVal  , (start2.value*rotationMultiplier)*randomVal, (start3.value*rotationMultiplier)*randomVal);
 						console.log(start.value + " ");
 						d4Array[i].setAngularVelocity(testRotation);
-						//var force_vector = new THREE.Vector3(-500, -10000, -500);
-						//diceArray[i].applyCentralImpulse(force_vector);
 					}
 					
 				}
@@ -605,9 +603,11 @@
 		<script src="scripts/dice/hammerScript.js"></script>
 		<!--Audio files for the pop sounds-->
 		<audio id="pop-up" controls>
-			<source src="sounds/pop-up.ogg" type="audio/ogg">
+<!--			<source src="sounds/pop-up.ogg" type="audio/ogg">-->
+			<source src="sounds/pop-up.mp3" type="audio/mpeg">
 		</audio>
 		<audio id="pop-down" controls>
-			<source src="sounds/pop-down.ogg" type="audio/ogg">
+<!--			<source src="sounds/pop-down.ogg" type="audio/ogg">-->
+			<source src="sounds/pop-down.mp3" type="audio/mpeg">
 		</audio>
 	</div>
