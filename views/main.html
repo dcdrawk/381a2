@@ -418,19 +418,21 @@
 			function onPinchStart( event, scale ){
 				document.getElementById('pop-down').play();
 				console.log(scale);
+				
 			}
 			
 			function onDocumentPinch( event, scale ) {
 				event.preventDefault();
 				if(scale <= 1){
+					
 					//play the sound, and adjust the volume based on the scale of the pinch
 					document.getElementById('pop-up').volume = 1-scale;
 					document.getElementById('pop-up').play();
-					
+					//document.getElementById('pop-up').style.width = ;
 					//subtract by 1.25 to buff up the scale a bit
 					scale = 1.25-scale;
 
-					var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+					var plusOrMinus = Math.random() < 0.5 ? -1 : 1;	
 					var plusOrMinus2 = Math.random() < 0.5 ? -1 : 1;
 					var plusOrMinus3 = Math.random() < 0.5 ? -1 : 1;
 
@@ -549,16 +551,13 @@
 			});
 			
 			//device motion source: http://w3c.github.io/deviceorientation/spec-source-orientation.html
-			window.addEventListener("devicemotion", function(event) {
-					
+			window.addEventListener("devicemotion", function(event) {					
 				  // Process event.acceleration, event.accelerationIncludingGravity,
 				  // event.rotationRate and event.interval				
 				if ((lastPos-event.acceleration.y) > .5 && event.acceleration.y < -3){
-					console.log(event.accelerationIncludingGravity);
 					onPinchStart( event, .5 );
 				}
 				if ((lastPos-event.acceleration.y) < 0 && event.acceleration.y > 2){
-					//console.log(event.acceleration.y);
 					onDocumentPinch( event, .5 );
 				}
 				lastPos = event.accelerationIncludingGravity.y;
@@ -572,28 +571,29 @@
 
 		}, false);
 		</script>
-	
+		<div id="pinchOutput">
+			
+		</div>
 		<div id="controls" ng-controller="MainCtrl" class="noselect">
-
 			<div id="drawerTitle">Dice Drawer</div>
-				<div layout="row">
-					<div flex="33" class="drawerBtn">D6</div>
-					<div flex="33" id="add-d6" class="add drawerBtn">+</div>
-					<div flex="33" id="removeD6" class="remove md-raised drawerBtn">-</div>
-				</div>
 			
-				<div layout="row">
-					<div flex="33" class="drawerBtn">D4</div>
-					<div flex="33" id="add-d4" class="add drawerBtn">+</div>
-					<div flex="33" id="removeD4" class="remove md-raised drawerBtn">-</div>
-				</div>
-			
+			<div layout="row">
+				<div flex="33" class="drawerBtn">D6</div>
+				<div flex="33" id="add-d6" class="add drawerBtn">+</div>
+				<div flex="33" id="removeD6" class="remove md-raised drawerBtn">-</div>
+			</div>
+
+			<div layout="row">
+				<div flex="33" class="drawerBtn">D4</div>
+				<div flex="33" id="add-d4" class="add drawerBtn">+</div>
+				<div flex="33" id="removeD4" class="remove md-raised drawerBtn">-</div>
+			</div>			
 			
 			
 			
 		</div>
 	
-		<div id="total"></div>
+<!--		<div id="total"></div>-->
 	
 		<script>
 		if (document.addEventListener) {
